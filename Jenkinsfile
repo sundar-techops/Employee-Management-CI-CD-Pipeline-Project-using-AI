@@ -126,7 +126,33 @@ pipeline {
         }
 
         // ─────────────────────────────────────────────
-        // STAGE 7: AI generates release notes
+        // STAGE 7: Verify Prometheus Monitoring
+        // ─────────────────────────────────────────────
+        stage('Verify Monitoring') {
+            steps {
+                echo '📊 Verifying Prometheus is scraping the app...'
+                sh """
+                  # Wait for pod to be healthy
+                  sleep 30
+
+                  # Check that the metrics endpoint responds
+                  APP_URL=\$(kubectl get svc employee-api-svc \
+                    -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+
+                  HTTP_CODE=\$(curl -s -o /dev/null -w "%{http_code}" \
+                    http://\$APP_URL/actuator/prometheus)
+
+                  if [ "\$HTTP_CODE" = "200" ]; then
+                    echo "✅ Prometheus metrics endpoint is healthy (HTTP 200)"
+                  else
+                    echo "⚠️  Metrics endpoint returned HTTP \$HTTP_CODE"
+                  fi
+                """
+            }
+        }
+
+        // ─────────────────────────────────────────────
+        // STAGE 8: AI generates release notes
         // ─────────────────────────────────────────────
         stage('AI: Generate Release Notes') {
             steps {
@@ -138,6 +164,7 @@ pipeline {
                       pip3 install anthropic --quiet --break-system-packages
                       python3 ai-assistant/generate_release_notes.py
                     """
+
                     // Archive the release notes as a build artifact
                     archiveArtifacts artifacts: 'RELEASE_NOTES.md', allowEmptyArchive: true
                     echo '✅ Release notes saved as build artifact'
@@ -171,6 +198,7 @@ pipeline {
                     echo "Trying workspace..." >> ai_failure_summary.md
                   fi
                 """
+
                 archiveArtifacts artifacts: 'ai_failure_summary.md', allowEmptyArchive: true
             }
         }
