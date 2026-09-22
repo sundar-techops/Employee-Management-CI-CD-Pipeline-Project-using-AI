@@ -45,6 +45,12 @@
       <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
 
+    <!-- Prometheus metrics support -->
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+    </dependency>
+
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
@@ -72,6 +78,7 @@
               <goal>prepare-agent</goal>
             </goals>
           </execution>
+
           <execution>
             <id>report</id>
             <phase>test</phase>
