@@ -58,6 +58,5 @@ public class EmployeeController {
         }
         employeeRepository.deleteById(id);
         return ResponseEntity.ok().build();
-        THIS_WILL_FAIL;
     }
 }
