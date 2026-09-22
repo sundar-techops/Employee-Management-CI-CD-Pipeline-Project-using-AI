@@ -387,11 +387,11 @@ SonarQube credentials
 
 # 🔗 Links
 
-## GitHub: YOUR_GITHUB_REPOSITORY
+## GitHub: https://github.com/sundar-techops/Employee-Management-CI-CD-Pipeline-Project-using-AI.git
 
-## Portfolio: YOUR_PORTFOLIO_URL
+## Portfolio: https://my-portfolio-three-orcin-grcexjtpye.vercel.app/
 
-## LinkedIn: YOUR_LINKEDIN_URL
+## LinkedIn: https://www.linkedin.com/in/sundar-techops
 
  
 # 👨‍💻 Author
